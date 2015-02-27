@@ -1,0 +1,35 @@
+---
+# URL of the haste-server repository to clone.
+haste_source_url: https://github.com/jirutka/haste-server.git
+
+# Revision (tag or branch) of the haste-server to checkout.
+haste_source_rev: HEAD
+
+
+# The user to create that will run the haste-server.
+haste_user: haste
+
+# The primary group for the haste user to create.
+haste_group: "{{ haste_user }}"
+
+# The network address to bind to.
+haste_host: 127.0.0.1
+
+# The port number to listen on.
+haste_port: 7777
+
+# Maximum size of pastes in kilobytes.
+haste_max_size: 300
+
+
+# Path of the directory to clone haste-server sources into.
+haste_base_dir: "/opt/haste-server"
+
+# Path of the data directory for pastes.
+haste_data_dir: "/var/lib/haste-server"
+
+# Path of the logs directory.
+haste_logs_dir: "/var/log/haste-server"
+
+# Path of the configuration file.
+haste_conf_path: "/etc/haste-server.json"

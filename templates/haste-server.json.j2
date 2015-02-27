@@ -1,0 +1,33 @@
+{
+  "host": "{{ haste_host }}",
+  "port": {{ haste_port }},
+
+  "keyLength": 7,
+
+  "maxLength": {{ haste_max_size * 1024 }},
+
+  "staticMaxAge": 86400,
+
+  "recompressStaticAssets": true,
+
+  "logging": [
+    {
+      "level": "info",
+      "type": "Console",
+      "colorize": false
+    }
+  ],
+
+  "keyGenerator": {
+    "type": "phonetic"
+  },
+
+  "storage": {
+    "type": "file",
+    "path": "{{ haste_data_dir }}"
+  },
+
+  "documents": {
+    "about": "./about.md"
+  }
+}

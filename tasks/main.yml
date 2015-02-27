@@ -1,0 +1,73 @@
+---
+- name: install nodejs
+  portage: package=net-libs/nodejs
+  tags: [ install, packages ]
+
+- name: create system group
+  group: >
+    name={{ haste_group }}
+    system=yes
+  tags: accounts
+
+- name: create system user
+  user: >
+    name={{ haste_user }}
+    group={{ haste_group }}
+    home={{ haste_base_dir }}
+    createhome=no
+    shell=/sbin/nologin
+    system=yes
+  tags: accounts
+
+
+- name: prepare directories
+  file: >
+    state=directory
+    path={{ item.path }}
+    owner={{ haste_user }}
+    group={{ haste_group }}
+    mode={{ item.mode | default('0755') }}
+  with_items:
+    - { path: "{{ haste_base_dir }}" }
+    - { path: "{{ haste_logs_dir }}" }
+    - { path: "{{ haste_data_dir }}", mode: '0750' }
+  tags: install
+
+- include: install.yml tags=install
+  sudo: yes
+  sudo_user: "{{ haste_user }}"
+
+- name: install runscript
+  template: >
+    src=runscript.j2
+    dest=/etc/init.d/haste-server
+    owner=root group=root mode=0755
+  tags: install
+
+
+- name: configure haste-server
+  template: >
+    src=haste-server.json.j2
+    dest={{ haste_conf_path }}
+    owner=root group=root mode=0644
+  notify: restart haste-server
+  tags: config
+
+- name: configure logrotate
+  template: >
+    src=logrotate.j2
+    dest=/etc/logrotate.d/haste-server
+    owner=root group=root mode=0644
+  ignore_errors: yes
+  tags: config
+
+
+  # Trigger handlers now to avoid unnecessary restarts.
+- meta: flush_handlers
+
+- name: enable and start haste-server
+  service: >
+    name=haste-server
+    enabled=yes
+    state=started
+  tags: services

@@ -1,0 +1,28 @@
+#!/sbin/runscript
+
+name="Haste server"
+description="Haste is an open-source pastebin software written in node.js"
+
+: ${haste_user:={{ haste_user }}}
+: ${haste_home:={{ haste_base_dir }}}
+: ${haste_conf:={{ haste_conf_path }}}
+: ${haste_log:={{ haste_logs_dir }}/haste.log}
+
+command="/usr/bin/node"
+command_args="${haste_home}/server.js"
+command_background=true
+
+start_stop_daemon_args="
+	--chdir ${haste_home}
+	--user ${haste_user}
+	--stdout ${haste_log}
+	--stderr ${haste_log}
+	--env CONF='$haste_conf'"
+
+pidfile="/run/haste-server.pid"
+
+required_files="$haste_conf"
+
+depend() {
+	use net
+}

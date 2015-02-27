@@ -1,0 +1,20 @@
+---
+- name: clone haste-server source repository
+  git: >
+    repo={{ haste_source_url }}
+    version={{ haste_source_rev }}
+    dest={{ haste_base_dir }}
+    accept_hostkey=yes
+  register: _haste_clone
+  notify: restart haste-server
+
+- name: install node modules
+  npm: >
+    path={{ haste_base_dir }}
+  when: _haste_clone | changed
+
+- name: build assets
+  command: >
+    npm run build
+    chdir={{ haste_base_dir }}
+  when: _haste_clone | changed
