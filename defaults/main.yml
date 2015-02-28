@@ -19,7 +19,7 @@ haste_host: 127.0.0.1
 haste_port: 7777
 
 # Maximum size of pastes in kilobytes.
-haste_max_size: 300
+haste_max_size: 384
 
 
 # Path of the directory to clone haste-server sources into.

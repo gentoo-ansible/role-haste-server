@@ -47,7 +47,7 @@
 
 - name: configure haste-server
   template: >
-    src=haste-server.json.j2
+    src=haste-server.json5.j2
     dest={{ haste_conf_path }}
     owner=root group=root mode=0644
   notify: restart haste-server

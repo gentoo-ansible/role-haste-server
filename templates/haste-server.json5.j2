@@ -1,0 +1,45 @@
+// {{ ansible_managed }}
+{
+  // The host and port to listen on.
+  host: "{{ haste_host }}",
+  port: {{ haste_port }},
+
+  // Length of the paste identifier in URL.
+  keyLength: 7,
+
+  keyGenerator: {
+    type: "phonetic"
+  },
+
+  storage: {
+    type: "file",
+    path: "{{ haste_data_dir }}"
+  },
+
+  // Static documents to serve (e.g. http://hastebin.com/about.md) in addition
+  // to static assets. These will never expire.
+  documents: {
+    about: "./about.md"
+  },
+
+  // Maximum paste size in kilobytes.
+  pasteMaxSize: {{ haste_max_size }},
+
+  // Settings for static assets cache; see https://github.com/isaacs/st#usage.
+  staticCache: {
+    content: {
+      max: 2097152,   // How much memory to use on caching contents (in bytes).
+      maxAge: 86400,  // How long to cache contents for (in seconds).
+      cacheControl: "public, max-age=86400"
+    }
+  },
+
+  // Logging preferences; see https://github.com/winstonjs/winston#working-with-transports.
+  logging: [
+    {
+      level: "verbose",
+      type: "Console",
+      colorize: false
+    }
+  ]
+}
